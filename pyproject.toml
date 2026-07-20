@@ -1,0 +1,13 @@
+[project]
+name = "cheese-dungeon"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.1.3",
+    "flask-sqlalchemy>=3.1.1",
+    "gunicorn>=26.0.0",
+    "psycopg2-binary>=2.9.12",
+    "werkzeug>=3.1.8",
+]

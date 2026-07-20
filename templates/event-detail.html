@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.event_name }} - Event Sign-Up{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    <a href="/" class="btn btn-secondary">← Back to Events</a>
+</div>
+
+<div class="form-section">
+    <h2>{{ event.event_name }}</h2>
+    <p style="margin-bottom: 15px;">
+        <strong>Host:</strong> <span class="event-host">{{ event.host }}</span>
+    </p>
+    <p>
+        <strong>When:</strong> <span class="event-when">{{ event.when.strftime('%B %d, %Y at %I:%M %p') }}</span>
+    </p>
+</div>
+
+<div class="participants-section">
+    <h3 style="color: #667eea; margin-bottom: 20px;">Sign Up for This Event</h3>
+    
+    <form method="POST" action="{{ url_for('signup_event', event_id=event.id) }}" style="margin-bottom: 30px;">
+        <div class="form-group">
+            <label for="participant_name">Your Name</label>
+            <input type="text" id="participant_name" name="participant_name" required placeholder="Enter your name">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">Sign Up</button>
+    </form>
+    
+    <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">
+        Participants ({{ event.participants|length }})
+    </h3>
+    
+    {% if event.participants %}
+        <ul class="participant-list">
+            {% for participant in event.participants %}
+                <li class="participant-item">
+                    <span class="name">{{ participant.name }}</span>
+                    <span style="font-size: 0.85em; color: #999;">
+                        Signed up: {{ participant.signed_up_at.strftime('%b %d, %I:%M %p') }}
+                    </span>
+                    <form method="POST" action="{{ url_for('remove_participant', event_id=event.id, participant_id=participant.id) }}" style="display: inline; margin: 0;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Remove this participant?');">Remove</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color: #999; font-style: italic;">No one has signed up yet. Be the first!</p>
+    {% endif %}
+</div>
+{% endblock %}
